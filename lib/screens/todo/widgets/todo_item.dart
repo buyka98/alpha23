@@ -29,7 +29,7 @@ class TodoItem extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            todo.isSelected ? Icons.check_circle : Icons.circle_outlined,
+            todo.isDone ? Icons.check_circle : Icons.circle_outlined,
           ),
           SizedBox(
             width: 10,
