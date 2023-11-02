@@ -1,3 +1,4 @@
+import 'package:alpha23/screens/main/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
               onPressed: () async {
                 // todo login
                 var credential = await FirebaseAuth.instance.signInAnonymously();
+                Future.delayed(Duration(seconds: 1), () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                });
                 print("credential $credential");
               },
               child: Padding(

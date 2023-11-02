@@ -4,10 +4,14 @@ import 'package:intl/intl.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoItemModel todo;
+  final Function handleEdit;
+  final void Function() handleCheck;
 
   const TodoItem({
     super.key,
     required this.todo,
+    required this.handleEdit,
+    required this.handleCheck,
   });
 
   @override
@@ -25,26 +29,40 @@ class TodoItem extends StatelessWidget {
           ),
         ],
       ),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
         children: [
-          Icon(
-            todo.isDone ? Icons.check_circle : Icons.circle_outlined,
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+            child: IconButton(
+              onPressed: handleCheck,
+              icon: Icon(todo.isDone ? Icons.check_circle : Icons.circle_outlined),
+            ),
           ),
           SizedBox(
             width: 10,
           ),
           Expanded(
-            child: Text(todo.detail ?? ""),
-          ),
-          Row(
-            children: [
-              Icon(Icons.calendar_month),
-              Text(
-                DateFormat.yMMMd().format(todo.deadline == null ? DateTime.now() : DateTime.parse(todo.deadline!)),
+              child: InkWell(
+            onTap: () => handleEdit(),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20, top: 20, bottom: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(todo.detail ?? ""),
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_month),
+                      Text(
+                        DateFormat.yMMMd().format(todo.deadline == null ? DateTime.now() : DateTime.parse(todo.deadline!)),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ],
-          )
+            ),
+          ))
         ],
       ),
     );

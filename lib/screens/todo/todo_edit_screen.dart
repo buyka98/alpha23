@@ -1,16 +1,19 @@
 import 'package:alpha23/models/todo_item_model.dart';
 import 'package:alpha23/screens/todo/widgets/todo_item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class TodoEditScreen extends StatefulWidget {
   final TodoItemModel todo;
-  const TodoEditScreen({super.key, required this.todo});
+  final String? docId;
+  const TodoEditScreen({super.key, required this.todo, required this.docId});
 
   @override
   State<TodoEditScreen> createState() => _TodoEditScreenState();
 }
 
 class _TodoEditScreenState extends State<TodoEditScreen> {
+  CollectionReference collection = FirebaseFirestore.instance.collection("todo");
   final TextEditingController todoController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
@@ -83,6 +86,10 @@ class _TodoEditScreenState extends State<TodoEditScreen> {
                     InkWell(
                       onTap: () {
                         // todo handle delete
+                        collection.doc(widget.docId).delete();
+                        Future.delayed(Duration(milliseconds: 200), () {
+                          Navigator.pop(context);
+                        });
                       },
                       child: Container(
                         padding: EdgeInsets.all(8),
@@ -98,7 +105,12 @@ class _TodoEditScreenState extends State<TodoEditScreen> {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          // todo handle save
+                          TodoItemModel newTodo =
+                              widget.todo.copyWith(deadline: dateController.text, detail: todoController.text);
+                          collection.doc(widget.docId).update(newTodo.toJson());
+                          Future.delayed(Duration(milliseconds: 200), () {
+                            Navigator.pop(context);
+                          });
                         },
                         child: Container(
                             padding: EdgeInsets.symmetric(vertical: 15),

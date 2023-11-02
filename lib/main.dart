@@ -1,12 +1,13 @@
 import 'package:alpha23/firebase_options.dart';
 import 'package:alpha23/screens/main/main_screen.dart';
+import 'package:alpha23/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  var app = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print("appp $app");
   runApp(const MyApp());
 }
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MainScreen(),
+      home: SplashScreen(),
     );
   }
 }
