@@ -1,4 +1,5 @@
 import 'package:alpha23/models/todo_item_model.dart';
+import 'package:alpha23/repositories/todo_repository.dart';
 import 'package:alpha23/screens/todo/widgets/todo_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class TodoEditScreen extends StatefulWidget {
 }
 
 class _TodoEditScreenState extends State<TodoEditScreen> {
-  CollectionReference collection = FirebaseFirestore.instance.collection("todo");
+  final TodoRepository todoRepository = TodoRepository();
   final TextEditingController todoController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
@@ -86,7 +87,7 @@ class _TodoEditScreenState extends State<TodoEditScreen> {
                     InkWell(
                       onTap: () {
                         // todo handle delete
-                        collection.doc(widget.docId).delete();
+                        todoRepository.deleteTodo(docId: widget.docId);
                         Future.delayed(Duration(milliseconds: 200), () {
                           Navigator.pop(context);
                         });
@@ -105,9 +106,12 @@ class _TodoEditScreenState extends State<TodoEditScreen> {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          TodoItemModel newTodo =
-                              widget.todo.copyWith(deadline: dateController.text, detail: todoController.text);
-                          collection.doc(widget.docId).update(newTodo.toJson());
+                          todoRepository.editTodo(
+                            docId: widget.docId,
+                            deadline: dateController.text,
+                            detail: todoController.text,
+                          );
+
                           Future.delayed(Duration(milliseconds: 200), () {
                             Navigator.pop(context);
                           });

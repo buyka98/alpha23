@@ -1,7 +1,4 @@
-import 'package:alpha23/models/todo_item_model.dart';
-import 'package:alpha23/screens/todo/widgets/todo_item.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:alpha23/repositories/todo_repository.dart';
 import 'package:flutter/material.dart';
 
 class TodoAddScreen extends StatefulWidget {
@@ -12,6 +9,7 @@ class TodoAddScreen extends StatefulWidget {
 }
 
 class _TodoAddScreenState extends State<TodoAddScreen> {
+  final TodoRepository todoRepository = TodoRepository();
   final TextEditingController todoController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
@@ -72,14 +70,10 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                 SizedBox(height: 25),
                 InkWell(
                   onTap: () async {
-                    CollectionReference collection = FirebaseFirestore.instance.collection("todo");
-                    TodoItemModel todo = TodoItemModel(
-                      userId: (await FirebaseAuth.instance.currentUser?.uid),
-                      todoId: collection.doc().id,
-                      deadline: dateController.text,
+                    todoRepository.addTodo(
                       detail: todoController.text,
+                      deadline: dateController.text,
                     );
-                    collection.add(todo.toJson()).then((value) => print("value $value"));
                     Future.delayed(Duration(milliseconds: 200), () {
                       Navigator.pop(context);
                     });

@@ -1,4 +1,5 @@
 import 'package:alpha23/models/todo_item_model.dart';
+import 'package:alpha23/repositories/todo_repository.dart';
 import 'package:alpha23/screens/todo/todo_add_screen.dart';
 import 'package:alpha23/screens/todo/todo_edit_screen.dart';
 import 'package:alpha23/screens/todo/widgets/todo_item.dart';
@@ -13,7 +14,7 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  CollectionReference collection = FirebaseFirestore.instance.collection("todo");
+  TodoRepository todoRepository = TodoRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +24,15 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => TodoAddScreen()));
+          todoRepository.getTodo();
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => TodoAddScreen()));
         },
         child: Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
         child: StreamBuilder<QuerySnapshot>(
-            stream: collection.snapshots(),
+            stream: todoRepository.displayTodo(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
@@ -54,9 +56,7 @@ class _TodoScreenState extends State<TodoScreen> {
                           );
                         },
                         handleCheck: () async {
-                          collection.doc(doc.id).update(
-                                todo.changeIsDone().toJson(),
-                              );
+                          todoRepository.checkTodo(docId: doc.id, isDone: todo.isDone);
                         },
                       );
                     });
