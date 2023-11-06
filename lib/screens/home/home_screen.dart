@@ -1,3 +1,4 @@
+import 'package:alpha23/screens/home/shared_storage_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -123,7 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               // Best Sellers bottom
               SizedBox(height: 30),
-              Image.asset("assets/images/home_img_1.png")
+              SharedPreferencesDemo(),
+              // Image.asset("assets/images/home_img_1.png")
             ],
           ),
         ))

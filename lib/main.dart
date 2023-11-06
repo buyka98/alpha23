@@ -1,8 +1,10 @@
 import 'package:alpha23/firebase_options.dart';
+import 'package:alpha23/screens/login/login_screen.dart';
 import 'package:alpha23/screens/main/main_screen.dart';
 import 'package:alpha23/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +22,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: SplashScreen(),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2,
+                color: Colors.redAccent,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2,
+                color: Colors.blueAccent,
+              ),
+            ),
+          )),
+      home: LoginScreen(),
     );
   }
 }

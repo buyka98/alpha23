@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'todo_item_model.g.dart';
+
+@JsonSerializable()
 class TodoItemModel {
   String? userId;
   String? todoId;
@@ -14,23 +18,11 @@ class TodoItemModel {
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      "user_id": userId,
-      "todo_id": todoId,
-      "detail": detail,
-      "deadline": deadline,
-      "is_done": isDone,
-    };
+    return _$TodoItemModelToJson(this);
   }
 
   factory TodoItemModel.fromJson(Map<String, dynamic> json) {
-    return TodoItemModel(
-      userId: json['user_id'],
-      todoId: json['todo_id'],
-      detail: json['detail'],
-      deadline: json['deadline'],
-      isDone: json['is_done'],
-    );
+    return _$TodoItemModelFromJson(json);
   }
 
   TodoItemModel copyWith({
