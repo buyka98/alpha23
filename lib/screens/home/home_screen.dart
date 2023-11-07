@@ -1,6 +1,8 @@
+import 'package:alpha23/bloc/auth_cubit.dart';
 import 'package:alpha23/screens/home/shared_storage_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -124,7 +126,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               // Best Sellers bottom
               SizedBox(height: 30),
-              SharedPreferencesDemo(),
+              ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthCubit>().logOut();
+                  },
+                  child: Text("Log Out"))
               // Image.asset("assets/images/home_img_1.png")
             ],
           ),
