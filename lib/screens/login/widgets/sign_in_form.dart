@@ -18,21 +18,15 @@ class _SignInFormState extends State<SignInForm> {
       children: [
         TextFormField(
           controller: phoneController,
+          keyboardType: TextInputType.phone,
+          maxLength: 8,
           decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 2,
-                  color: Colors.redAccent,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 2,
-                  color: Colors.blueAccent,
-                ),
-              ),
-              hintText: "Enter phone number"),
+            labelText: "Phone",
+            hintText: "Enter phone number",
+          ),
+          onFieldSubmitted: (value) {
+            print("done $value");
+          },
         ),
         ElevatedButton(onPressed: () {}, child: Text("Login")),
       ],
