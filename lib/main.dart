@@ -1,16 +1,15 @@
 import 'package:alpha23/bloc/auth_cubit.dart';
+import 'package:alpha23/cache.dart';
 import 'package:alpha23/firebase_options.dart';
-import 'package:alpha23/screens/auth/login_screen.dart';
 import 'package:alpha23/screens/main/main_screen.dart';
-import 'package:alpha23/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var app = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  cache = Cache();
   runApp(const MyApp());
 }
 

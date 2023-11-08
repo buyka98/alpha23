@@ -1,7 +1,6 @@
-import 'package:alpha23/bloc/auth_cubit.dart';
+import 'package:alpha23/cache.dart';
 import 'package:alpha23/screens/auth/register_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +12,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isRemember = true;
+
+  @override
+  void initState() {
+    if (cache.isRemember) {
+      emailController.text = cache.rememberEmail!;
+      passwordController.text = cache.rememberPassword!;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
-                          labelText: "Enter email",
+                          labelText: "Enter emailjjsj",
                         ),
                         onFieldSubmitted: (value) {
                           print("done $value");
@@ -62,24 +71,50 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 20),
                       TextFormField(
+                        obscureText: true,
                         controller: passwordController,
                         keyboardType: TextInputType.visiblePassword,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
-                          labelText: "Enter password",
+                          labelText: "Enter password here",
+                          hintText: "hint here",
                         ),
                         onFieldSubmitted: (value) {
                           print("done $value");
                         },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || value.length < 3) {
                             return "Please enter your password";
                           } else {
                             return null;
                           }
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isRemember = !isRemember;
+                          });
+                        },
+                        child: IntrinsicHeight(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              isRemember
+                                  ? Icon(
+                                      Icons.check_box,
+                                      color: Colors.blue,
+                                    )
+                                  : Icon(Icons.check_box_outline_blank_rounded),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: Text("Remember me"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -103,10 +138,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 InkWell(
                   onTap: () {
                     FocusScope.of(context).unfocus();
-                    context.read<AuthCubit>().login(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        );
+                    cache.rememberUser(isRemember, email: emailController.text, password: passwordController.text);
+                    // context.read<AuthCubit>().login(
+                    //       email: emailController.text,
+                    //       password: passwordController.text,
+                    //     );
                   },
                   child: Container(
                       padding: EdgeInsets.symmetric(vertical: 15),
